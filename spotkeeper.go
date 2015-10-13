@@ -100,12 +100,15 @@ func main() {
 		if err != nil {
 			if *quiet {
 				//fmt.Printf("err = %#v\n", err)
-				if e, ok := err.(spot.Error); ok {
+				testErr := err
+				if e, ok := testErr.(spot.DebugError); ok {
+					testErr = e.Err
+				}
+				if e, ok := testErr.(spot.Error); ok {
 					if e.Code == "E-0195" {
 						err = nil
 					}
 				}
-				testErr := err
 				if e, ok := testErr.(*url.Error); ok {
 					testErr = e.Err
 				}
